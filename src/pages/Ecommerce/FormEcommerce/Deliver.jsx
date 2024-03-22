@@ -3,9 +3,8 @@ import TopNavbar from "../../components/TopNavbar/TopNavbar";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import ClockLoader from "react-spinners/ClockLoader";
-// import { cssOverride } from 'react-spinners';
-const Customer = () => {
-  const [custommers, setCustommer] = useState([]);
+const Deliver = () => {
+  const [delivers, setDelivers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const limit = 2;
@@ -16,19 +15,18 @@ const Customer = () => {
     margin: "0 auto",
     borderColor: "blue",
   };
-
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
     }, 1000);
-    fetchCustommers();
+    fetchDelivers();
   }, [currentPage]);
 
-  const fetchCustommers = async () => {
+  const fetchDelivers = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/get-all-user`,
+        `http://localhost:8080/api/v1/get-all-staff-delivery`,
         {
           params: {
             page: currentPage - 1, // trang hiện tại
@@ -36,7 +34,7 @@ const Customer = () => {
           },
         }
       );
-      setCustommer(response.data.userResponses);
+      setDelivers(response.data.userResponses);
       setTotalPages(response.data.totalPages); // tính tổng số trang
       console.log("Check user: ", response);
     } catch (error) {
@@ -50,7 +48,7 @@ const Customer = () => {
     <div>
       {loading ? (
         <ClockLoader
-          color={"#313A46"}
+          color={"#36d7b7"}
           loading={loading}
           cssOverride={override}
           size={70}
@@ -74,10 +72,10 @@ const Customer = () => {
                       <li className="breadcrumb-item">
                         <a href="javascript: void(0);">eCommerce</a>
                       </li>
-                      <li className="breadcrumb-item active">Customers</li>
+                      <li className="breadcrumb-item active">Sellers</li>
                     </ol>
                   </div>
-                  <h4 className="page-title">Customers</h4>
+                  <h4 className="page-title">Sellers</h4>
                 </div>
               </div>
             </div>
@@ -92,8 +90,7 @@ const Customer = () => {
                           href="javascript:void(0);"
                           className="btn btn-danger mb-2"
                         >
-                          <i className="mdi mdi-plus-circle me-2" /> Add
-                          Customers
+                          <i className="mdi mdi-plus-circle me-2" /> Add Sellers
                         </a>
                       </div>
                       <div className="col-sm-7">
@@ -119,10 +116,10 @@ const Customer = () => {
                     </div>
                     <div className="table-responsive">
                       <table
-                        className="table table-centered table-striped dt-responsive nowrap w-100"
+                        className="table table-centered table-borderless table-hover w-100 dt-responsive nowrap"
                         id="products-datatable"
                       >
-                        <thead>
+                        <thead className="table-light">
                           <tr>
                             <th style={{ width: 20 }}>
                               <div className="form-check">
@@ -139,20 +136,19 @@ const Customer = () => {
                                 </label>
                               </div>
                             </th>
-                            <th>Customer</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Location</th>
-                            <th>Date of birth</th>
-                            <th>Status</th>
+                            <th>Seller</th>
+                            <th>Store Name</th>
+                            <th>Products</th>
+                            <th>Wallet Balance</th>
+                            <th>Create Date</th>
+                            <th>Revenue</th>
                             <th style={{ width: 75 }}>Action</th>
                           </tr>
                         </thead>
-
                         <tbody>
-                          {custommers &&
-                            custommers.length > 0 &&
-                            custommers.map((custommersItem, index) => {
+                          {delivers &&
+                            delivers.length > 0 &&
+                            delivers.map((deliversItem, index) => {
                               return (
                                 <tr key={index}>
                                   <td>
@@ -180,17 +176,20 @@ const Customer = () => {
                                       href="javascript:void(0);"
                                       className="text-body fw-semibold"
                                     >
-                                      {custommersItem.fullName}
+                                      Paul J. Friend
                                     </a>
                                   </td>
-                                  <td>{custommersItem.phoneNumber}</td>
-                                  <td>{custommersItem.email}</td>
-                                  <td>Việt Nam</td>
-                                  <td>{custommersItem.dateOfBirth}</td>
+                                  <td>Homovee</td>
                                   <td>
-                                    <span className="badge badge-success-lighten">
-                                      {custommersItem.active ? "active" : ""}
-                                    </span>
+                                    <span className="fw-semibold">128</span>
+                                  </td>
+                                  <td>$128,250</td>
+                                  <td>07/07/2018</td>
+                                  <td>
+                                    <div
+                                      className="spark-chart"
+                                      data-dataset="[25, 66, 41, 89, 63, 25, 44, 12, 36, 9, 54]"
+                                    />
                                   </td>
                                   <td>
                                     <a
@@ -274,11 +273,10 @@ const Customer = () => {
             {/* end row */}
           </div>{" "}
           {/* container */}
-          {/* content */}
         </>
       )}
     </div>
   );
 };
 
-export default Customer;
+export default Deliver;
